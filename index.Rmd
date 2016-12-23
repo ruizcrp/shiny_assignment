@@ -1,0 +1,74 @@
+---
+title       : Shiny Asssignment
+subtitle    : Displaying Communes in Switzerland
+author      : Christian Ruiz-Palmero
+job         : PhD
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : []            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Introduction
+
+This application shows the communes in Switzerland. It consist of three crucial elements.
+
+1. A plot that displays the communes by distinct colors depending on the cantons that they are in.
+2. A slider that lets the user select a range of cantons that is to be displayed in the plot.
+3. And a table that displays in text the cantonsthat were selected and plotted.
+
+--- .class #id 
+
+## Element 1: Slider
+
+The following code shows the simple slider. Below you can see that the default value is a vector of 1 and 29. In other words, all the cantons are selected here.
+
+```{r, eval=FALSE}
+sliderInput("cantslider",
+                   "Select the Cantons:",
+                   min = 1,
+                   max = 29,
+                   value = c(1,29))
+    ),
+
+```
+
+
+
+--- .class #id 
+## Element 2: Plot
+In principle the plot is in the form of
+```{r, eval=FALSE}
+plot(map_data$longitude,
+      map_data$latitude,
+      col=map_data$canton,
+         xlab="",ylab="",pch=19)
+```
+However, for every variable the following conditional statement is taken, where input$cantslider[1] and input$cantslider[2] represent the two values of the slider:
+```{r, eval=FALSE}
+map_data$id_canton >= input$cantslider[1] & map_data$id_canton <= input$cantslider[2]
+```
+
+--- .class #id 
+## Element 3: Table
+Lastly, a table is rendered where the names of the cantons are displayed as text. 
+
+```{r, eval=FALSE}
+  output$range <- renderTable({ 
+  },include.colnames=FALSE)
+```
+ The main element in this renderTable is a matrix. The matrix is created as follows and consists of two elements. The first one is a vector of the cantons that are selected:
+ ```{r, eval=FALSE}
+        matrix(
+            c(as.character(
+                  unique(
+                        map_data$canton)
+                        [input$cantslider[1]:input$cantslider[2]]),
+```
+The second part than fills the matrix with empty values as else the matrix would be filled with the first elements again.
+```{r, eval=FALSE}
+              rep("",8-length(input$cantslider[1]:input$cantslider[2])%%8))
+```
+

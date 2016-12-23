@@ -1,1 +1,174 @@
-My GitHub Page
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shiny Asssignment</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Shiny Asssignment">
+  <meta name="author" content="Christian Ruiz-Palmero">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Shiny Asssignment</h1>
+    <h2>Displaying Communes in Switzerland</h2>
+    <p>Christian Ruiz-Palmero<br/>PhD</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Introduction</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This application shows the communes in Switzerland. It consist of three crucial elements.</p>
+
+<ol>
+<li>A plot that displays the communes by distinct colors depending on the cantons that they are in.</li>
+<li>A slider that lets the user select a range of cantons that is to be displayed in the plot.</li>
+<li>And a table that displays in text the cantonsthat were selected and plotted.</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Element 1: Slider</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The following code shows the simple slider. Below you can see that the default value is a vector of 1 and 29. In other words, all the cantons are selected here.</p>
+
+<pre><code class="r">sliderInput(&quot;cantslider&quot;,
+                   &quot;Select the Cantons:&quot;,
+                   min = 1,
+                   max = 29,
+                   value = c(1,29))
+    ),
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Element 2: Plot</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>In principle the plot is in the form of</p>
+
+<pre><code class="r">plot(map_data$longitude,
+      map_data$latitude,
+      col=map_data$canton,
+         xlab=&quot;&quot;,ylab=&quot;&quot;,pch=19)
+</code></pre>
+
+<p>However, for every variable the following conditional statement is taken, where input$cantslider[1] and input$cantslider[2] represent the two values of the slider:</p>
+
+<pre><code class="r">map_data$id_canton &gt;= input$cantslider[1] &amp; map_data$id_canton &lt;= input$cantslider[2]
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Element 3: Table</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Lastly, a table is rendered where the names of the cantons are displayed as text. </p>
+
+<pre><code class="r">  output$range &lt;- renderTable({ 
+  },include.colnames=FALSE)
+</code></pre>
+
+<p>The main element in this renderTable is a matrix. The matrix is created as follows and consists of two elements. The first one is a vector of the cantons that are selected:</p>
+
+<pre><code class="r">        matrix(
+            c(as.character(
+                  unique(
+                        map_data$canton)
+                        [input$cantslider[1]:input$cantslider[2]]),
+</code></pre>
+
+<p>The second part than fills the matrix with empty values as else the matrix would be filled with the first elements again.</p>
+
+<pre><code class="r">              rep(&quot;&quot;,8-length(input$cantslider[1]:input$cantslider[2])%%8))
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Introduction'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Element 1: Slider'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Element 2: Plot'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Element 3: Table'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
