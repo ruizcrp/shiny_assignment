@@ -1,13 +1,6 @@
 
 library(shiny)
-#first of all the data has to be loaded
-setwd("C:/Users/CRP/Dropbox/DataScience/DataProducts/Ass2/")
-map_data<-read.csv2("swiss_communes.csv",dec=".")
 
-#then some data conversions have to be undertaken
-map_data$canton<-as.factor(map_data$canton)
-map_data<- map_data[order(map_data$canton),] 
-map_data$id_canton<-as.numeric(map_data$canton)
 
 
 # I will use navbarPage in order to create two tabs in the top

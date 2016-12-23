@@ -2,9 +2,20 @@
 
 library(shiny)
 
+#first of all the data has to be loaded
+setwd("/Users/CRP/Dropbox/DataScience/DataProducts/Ass2/")
+map_data<<-read.csv2("swiss_communes.csv",dec=".")
+
+#then some data conversions have to be undertaken
+map_data$canton<<-as.factor(map_data$canton)
+map_data<<- map_data[order(map_data$canton),] 
+map_data$id_canton<<-as.numeric(map_data$canton)
+
+
 #the server consists mainly of two outputs: a table and a plot
 shinyServer(function(input, output) {
   
+   
  
  #the following command renders the table and might look a bit long
       
